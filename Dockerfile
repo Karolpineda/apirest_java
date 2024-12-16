@@ -4,11 +4,17 @@ FROM openjdk:17-jdk-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the JAR file from the build context (replace 'your-application.jar' with your actual JAR name)
+# Copy the application code into the container
+COPY . /app
+
+# Build the application (assuming Maven is used)
+RUN ./mvnw clean package
+
+# Copy the built JAR file to the container
 COPY target/apirest-java-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port the application runs on
+# Expose the port the application will run on
 EXPOSE 8080
 
-# Command to run the JAR file
+# Command to run the application
 CMD ["java", "-jar", "app.jar"]
