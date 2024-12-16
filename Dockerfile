@@ -1,20 +1,15 @@
-# Use an official OpenJDK 17 image
+# Usa una imagen base de OpenJDK
 FROM openjdk:17-jdk-slim
 
-# Set the working directory in the container
+# Configura el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copy the application code into the container
-COPY . /app
+# Copia el archivo JAR desde tu máquina al contenedor
+# Asegúrate de que este archivo exista en la raíz de tu proyecto
+COPY apirest-java.jar app.jar
 
-# Build the application (assuming Maven is used)
-RUN ./mvnw clean package
-
-# Copy the built JAR file to the container
-COPY target/apirest-java-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose the port the application will run on
+# Expone el puerto en el que la aplicación se ejecutará
 EXPOSE 8080
 
-# Command to run the application
+# Comando para ejecutar la aplicación
 CMD ["java", "-jar", "app.jar"]
