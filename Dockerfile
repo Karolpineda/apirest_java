@@ -1,15 +1,20 @@
-# Usa una imagen base de OpenJDK
+# Usa una imagen base con JDK
 FROM openjdk:17-jdk-slim
 
-# Configura el directorio de trabajo dentro del contenedor
+# Define el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia el archivo JAR desde tu máquina al contenedor
-# Asegúrate de que este archivo exista en la raíz de tu proyecto
-COPY apirest-java.jar app.jar
+# Copia el contenido del proyecto
+COPY src /app/src
 
-# Expone el puerto en el que la aplicación se ejecutará
+# Compila los archivos .java
+RUN javac -d build $(find src -name "*.java")
+
+# Empaqueta las clases compiladas en un JAR manualmente
+RUN jar cfe app.jar apirest.Application -C build .
+
+# Expone el puerto
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación
+# Ejecuta el JAR al iniciar el contenedor
 CMD ["java", "-jar", "app.jar"]
