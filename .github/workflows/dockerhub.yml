@@ -20,7 +20,8 @@ jobs:
         distribution: 'temurin'
 
     - name: Navigate to project directory
-      run: cd apirest_java
+      run: |
+        cd apirest_java || exit 1
 
     - name: Build with Maven
       run: mvn clean package
